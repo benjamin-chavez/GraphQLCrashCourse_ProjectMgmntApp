@@ -8,6 +8,7 @@ export default function AddClientModal() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
   const [addClient] = useMutation(ADD_CLIENT, {
     variables: { name, email, phone },
 
