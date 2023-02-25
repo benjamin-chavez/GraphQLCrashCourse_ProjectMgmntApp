@@ -170,24 +170,16 @@ const mutation = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
+        // Cascade Delete all of the deleted client's projects
+        Project.find({ clientId: args.id }).then((projects) => {
+          projects.forEach((project) => {
+            project.remove();
+          });
+        });
+
         return Client.findByIdAndRemove(args.id);
       },
     },
-    // deleteClient: {
-    //   type: ClientType,
-    //   args: {
-    //     id: { type: GraphQLNonNull(GraphQLID) },
-    //   },
-    //   resolve(parent, args) {
-    //     Project.find({ clientId: args.id }).then((projects) => {
-    //       projects.forEach((project) => {
-    //         project.remove();
-    //       });
-    //     });
-
-    //     return Client.findByIdAndRemove(args.id);
-    //   },
-    // },
 
     // Add a project
     addProject: {
